@@ -1,1 +1,1 @@
-from meeseeks.src.iam import OnlyOne
+from .iam import OnlyOne

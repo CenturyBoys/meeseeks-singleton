@@ -25,12 +25,6 @@ def test_global_config_ttl_default_behaviour():
     assert global_options["ttl"] == 0
 
 
-def test_global_config_ttl_default_invalid_type():
-    OnlyOne.set_global_options(ttl=True)
-    global_options = OnlyOne.get_global_options()
-    assert global_options["ttl"] == 0
-
-
 def test_global_config_ttl_set_value():
     OnlyOne.set_global_options(ttl=3)
     global_options = OnlyOne.get_global_options()
@@ -62,7 +56,7 @@ def test_config_ttl_default_behaviour():
 
 
 def test_config_ttl_default_invalid_type():
-    one_only_one = OnlyOne(ttl=True)
+    one_only_one = OnlyOne(ttl="1")
     options = one_only_one.get_options()
     assert options["ttl"] == 0
 
