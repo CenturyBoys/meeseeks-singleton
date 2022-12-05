@@ -1,12 +1,19 @@
-# A Singleton python project 
+# A Singleton python project
 ![Alt text](https://ih1.redbubble.net/image.1140492877.4744/mp,504x516,gloss,f8f8f8,t-pad,600x600,f8f8f8.jpg "Title")
+
+Did you need help? Call meeseeks from a single box from anywhere
+
+This is meeseeks a single class to do singletons. In the core meeseeks is a class decorator that allowed you to have a global singleton scope or a specialized one, some configurations can be used to give more flexibility for your code.
+
+
+# Scopes
+
+The scope can be global that means your configuration and your singletons can be called anywhere inside your code, or specialized one that in other wize you create meeseeks object (OnlyOne) and this object will have your configuration and singleton
+
+### Global
 
 ```python
 import meeseeks
-
-meeseeks.OnlyOne.set_global_options(
-    by_args_hash=True
-)
 
 @meeseeks.OnlyOne
 class A:
@@ -14,11 +21,103 @@ class A:
         pass
 
 a1a = A(10)
-a2a = A(20)
 a1b = A(10)
-a2b = A(20)
+a1c = A(20)
+
+assert a1a == a1b == a1c
+```
+On this example we register the class reference on the global scope 
+
+### Specialized
+
+```python
+import meeseeks
+
+@meeseeks.OnlyOne()
+class A:
+    def __int__(self, a):
+        pass
+
+a1a = A(10)
+a1b = A(10)
+a1c = A(20)
+
+assert a1a == a1b == a1c
+```
+
+or
+
+```python
+import meeseeks
+
+only_one = meeseeks.OnlyOne()
+
+@only_one
+class A:
+    def __int__(self, a):
+        pass
+
+a1a = A(10)
+a1b = A(10)
+a1c = A(20)
+
+assert a1a == a1b == a1c
+```
+
+On this example we register the class reference on the meeseeks class instance scope
+
+# Configuration
+
+We provide two configurations options:
+- `tll: int` (time to live) in seconds. Setting a value great then 0 a singleton reference will have a time to live in seconds (default 0). Obs: the expired time validation will be made only when you create a new instance of the registered class ie your object will still on memory.
+-  `by_args_hash: bool` (will be made a hash of all args and kwargs ). Setting True a singleton reference will create for each arg + kwargs hash (default False). Obs: There no difference between on the kwargs`s order.
+        
+
+### TTL 
+
+```python
+import meeseeks
+import time
+
+meeseeks.OnlyOne.set_global_options(ttl=1)
+
+@meeseeks.OnlyOne
+class A:
+    def __int__(self, *args, **kwargs):
+        pass
+
+a1a = A(1, var_a="a")
+a1b = A(1, var_a="a")
+
+time.sleep(1)
+
+a1c = A(1, var_a="a")
 
 assert a1a == a1b
-assert a2a == a2b
-assert a2a != a1b
+assert a1b != a1c
 ```
+
+In this example, we set the `ttl` to `1` second and validate if the two first calls result in the same object and after 1 second we validate if the object is different from the first two
+
+### BY_ARGS_HASH
+
+
+```python
+import meeseeks
+import time
+
+@meeseeks.OnlyOne(by_args_hash=True)
+class A:
+    def __int__(self, a):
+        pass
+
+a1a = A(1, var_a="a", var_b="b")
+a1b = A(1, var_b="b", var_a="a")
+a1c = A(10, var_b="b", var_a="a")
+
+
+
+assert a1a == a1b
+assert a1c != a1b
+```
+In this example, we set the `by_args_hash` to `True` and validate if the two first calls result in the same object despite the kwargs order being different. The last validation shows us that different args and kwargs result in different objects.

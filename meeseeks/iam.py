@@ -17,7 +17,7 @@ class OnlyOne:
 
         Keyword arguments:\n
         by_args_hash: bool -- Setting True a singleton reference will create for each arg + kwargs hash (default False)\n
-        ttl: int -- Setting a value great then 0 a singleton reference will have a time to live in seconds (ttl 0)\n
+        ttl: int -- Setting a value great then 0 a singleton reference will have a time to live in seconds (default 0)\n
         """
         if not isinstance(by_args_hash, bool):
             by_args_hash = False
@@ -32,7 +32,7 @@ class OnlyOne:
 
         Keyword arguments:\n
         by_args_hash: bool -- Setting True a singleton reference will create for each arg + kwargs hash (default False)\n
-        ttl: int -- Setting a value great then 0 a singleton reference will have a time to live in seconds (ttl 0)\n
+        ttl: int -- Setting a value great then 0 a singleton reference will have a time to live in seconds (default 0)\n
         """
         if not isinstance(by_args_hash, bool):
             by_args_hash = False
@@ -123,7 +123,9 @@ class OnlyOne:
                     hash_str=hash_str,
                 )
             else:
-                if object_instance := get_simple_singleton(class_reference=class_reference):
+                if object_instance := get_simple_singleton(
+                    class_reference=class_reference
+                ):
                     return object_instance
                 object_instance = class_reference(*args, **kwargs)
                 set_simple_singleton(
