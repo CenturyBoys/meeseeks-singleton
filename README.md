@@ -3,12 +3,12 @@
 
 Did you need help? Call meeseeks from a single box from anywhere
 
-This is meeseeks a single class to do singletons. In the core meeseeks is a class decorator that allowed you to have a global singleton scope or a specialized one, some configurations can be used to give more flexibility for your code.
+This is meeseeks a single class to do singletons. In the core meeseeks is a class decorator that allows you to have a global singleton scope or a specialized one, some configurations can be used to give more flexibility to your code.
 
 
 # Scopes
 
-The scope can be global that means your configuration and your singletons can be called anywhere inside your code, or specialized one that in other wize you create meeseeks object (OnlyOne) and this object will have your configuration and singleton
+The scope can be global that means your configuration and your singletons can be called anywhere inside your code, or specialized one, that is otherwise you create meeseeks object (OnlyOne) and this object will have your configuration and singletons
 
 ### Global
 
@@ -26,7 +26,7 @@ a1c = A(20)
 
 assert a1a == a1b == a1c
 ```
-On this example we register the class reference on the global scope 
+On this example we register the class reference in the global scope 
 
 ### Specialized
 
@@ -64,13 +64,13 @@ a1c = A(20)
 assert a1a == a1b == a1c
 ```
 
-On this example we register the class reference on the meeseeks class instance scope
+On this example we register the class reference in the meeseeks class instance scope
 
 # Configuration
 
-We provide two configurations options:
-- `tll: int` (time to live) in seconds. Setting a value great then 0 a singleton reference will have a time to live in seconds (default 0). Obs: the expired time validation will be made only when you create a new instance of the registered class ie your object will still on memory.
--  `by_args_hash: bool` (will be made a hash of all args and kwargs ). Setting True a singleton reference will create for each arg + kwargs hash (default False). Obs: There no difference between on the kwargs`s order.
+We provide two configuration options:
+- `tll: int` (time to live) in seconds. Setting a value greater than 0, the singleton reference will have a time to live in seconds (default 0). Obs: the expired time validation will be made only when you create a new instance of the registered class _ie_ your object will still be in memory
+-  `by_args_hash: bool` ( a hash will be made of all args and kwargs ). Setting True, a singleton reference will be created for each arg + kwargs hash (default False). Obs:  The kwargs`s order doesn't have influence
         
 
 ### TTL 
@@ -97,7 +97,7 @@ assert a1a == a1b
 assert a1b != a1c
 ```
 
-In this example, we set the `ttl` to `1` second and validate if the two first calls result in the same object and after 1 second we validate if the object is different from the first two
+In this example, we set the `ttl` to `1` second and validate if the first two calls result in the same object and after 1 second we validate if the object is different from the first two
 
 ### BY_ARGS_HASH
 
@@ -120,4 +120,4 @@ a1c = A(10, var_b="b", var_a="a")
 assert a1a == a1b
 assert a1c != a1b
 ```
-In this example, we set the `by_args_hash` to `True` and validate if the two first calls result in the same object despite the kwargs order being different. The last validation shows us that different args and kwargs result in different objects.
+In this example, we set  `by_args_hash` variable to `True` and validate if the first two calls result in the same object despite the kwargs order being different. The last validation shows us that different args and kwargs result in different objects.

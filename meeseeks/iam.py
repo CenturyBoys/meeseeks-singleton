@@ -16,8 +16,12 @@ class OnlyOne:
         """This will set a global singleton configuration.
 
         Keyword arguments:\n
-        by_args_hash: bool -- Setting True a singleton reference will create for each arg + kwargs hash (default False)\n
-        ttl: int -- Setting a value great then 0 a singleton reference will have a time to live in seconds (default 0)\n
+        by_args_hash: bool -- Setting a value greater than 0, the singleton reference will have a time to live in
+        seconds (default 0).
+        Obs: the expired time validation will be made only when you create
+        a new instance of the registered class _ie_ your object will still be in memory.\n
+        ttl: int -- Setting True, a singleton reference will be created for each arg + kwargs hash (default False).
+        Obs:  The kwargs`s order doesn't have influence\n
         """
         if not isinstance(by_args_hash, bool):
             by_args_hash = False
@@ -31,8 +35,12 @@ class OnlyOne:
         """This will create a singleton instance with it an independent configuration.
 
         Keyword arguments:\n
-        by_args_hash: bool -- Setting True a singleton reference will create for each arg + kwargs hash (default False)\n
-        ttl: int -- Setting a value great then 0 a singleton reference will have a time to live in seconds (default 0)\n
+        by_args_hash: bool -- Setting a value greater than 0, the singleton reference will have a time to live in
+        seconds (default 0).
+        Obs: the expired time validation will be made only when you create
+        a new instance of the registered class _ie_ your object will still be in memory.\n
+        ttl: int -- Setting True, a singleton reference will be created for each arg + kwargs hash (default False).
+        Obs:  The kwargs`s order doesn't have influence\n
         """
         if not isinstance(by_args_hash, bool):
             by_args_hash = False
