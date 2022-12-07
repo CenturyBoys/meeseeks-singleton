@@ -4,6 +4,10 @@ version = "0.1.0"
 description = "A Singleton python project"
 authors = ["Ximit Gaia <im.ximit@gamil.com>"]
 readme = "README.md"
+packages = [
+    { include = "meeseeks"},
+    { include = "meeseeks/**/*.py" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -16,3 +20,7 @@ mutatest = "^3.1.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+"Homepage" = "https://github.com/XimitGaia/meeseeks"
+"Bug Tracker" = "https://github.com/XimitGaia/meeseeks/issues"
