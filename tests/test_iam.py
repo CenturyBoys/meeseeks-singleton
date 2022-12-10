@@ -106,21 +106,21 @@ def stub_a_with_ttl_and_by_args_hash(request):
         return StubA
 
 
-def test_global_get_same_instance(stub_a):
+def test_get_same_instance(stub_a):
     a1 = stub_a()
     a2 = stub_a()
     have_seme_instance = a1 == a2
     assert have_seme_instance
 
 
-def test_global_get_same_instance_with_ignore_args_and_kwargs(stub_a):
+def test_get_same_instance_with_ignore_args_and_kwargs(stub_a):
     a1 = stub_a(1, var_a="a")
     a2 = stub_a(10, var_b="a")
     have_seme_instance = a1 == a2
     assert have_seme_instance
 
 
-def test_global_get_instance_by_args_hash(stub_a_with_bah):
+def test_get_instance_by_args_hash(stub_a_with_bah):
 
     a1a = stub_a_with_bah(1, var_a="a")
     a2a = stub_a_with_bah(10, var_b="a")
@@ -132,7 +132,7 @@ def test_global_get_instance_by_args_hash(stub_a_with_bah):
     assert a1a != a2b
 
 
-def test_global_get_instance_with_ttl(stub_a_with_ttl):
+def test_get_instance_with_ttl(stub_a_with_ttl):
 
     a1a = stub_a_with_ttl(1, var_a="a")
     a2a = stub_a_with_ttl(10, var_b="a")
@@ -151,7 +151,7 @@ def test_global_get_instance_with_ttl(stub_a_with_ttl):
     assert a2b != a2c
 
 
-def test_global_get_instance_with_ttl_and_instance_by_args_hash(
+def test_get_instance_with_ttl_and_instance_by_args_hash(
     stub_a_with_ttl_and_by_args_hash,
 ):
 
@@ -177,3 +177,24 @@ def test_global_get_instance_with_ttl_and_instance_by_args_hash(
 
     assert a1b not in [a1c, a1d]
     assert a2b not in [a2c, a2d]
+
+
+def test_clean_specialized_same_instance(stub_a):
+
+    specialized = meeseeks.OnlyOne(by_args_hash=True)
+
+    @specialized
+    class StubA:
+        def __init__(self, *args, **kwargs):
+            self.args: tuple = args
+            self.kwargs: dict = kwargs
+
+    a1 = StubA(1, 2)
+    a2 = StubA(1, 2)
+    assert a1 == a2
+
+    specialized.clean_references()
+
+    a3 = StubA(1, 2)
+
+    assert a1 != a3

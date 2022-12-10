@@ -19,14 +19,11 @@ class OnlyOne:
         by_args_hash: bool -- Setting a value greater than 0, the singleton reference will have a time to live in
         seconds (default 0).
         Obs: the expired time validation will be made only when you create
-        a new instance of the registered class _ie_ your object will still be in memory.\n
+        a new instance of the registered class ie your object will still be in memory.\n
         ttl: int -- Setting True, a singleton reference will be created for each arg + kwargs hash (default False).
         Obs:  The kwargs`s order doesn't have influence\n
         """
-        if not isinstance(by_args_hash, bool):
-            by_args_hash = False
-        if not isinstance(ttl, int):
-            ttl = 0
+        by_args_hash, ttl = OnlyOne._validate_config(by_args_hash=by_args_hash, ttl=ttl)
 
         cls.__global_option_by_args_hash = by_args_hash
         cls.__global_option_ttl = ttl
@@ -38,20 +35,31 @@ class OnlyOne:
         by_args_hash: bool -- Setting a value greater than 0, the singleton reference will have a time to live in
         seconds (default 0).
         Obs: the expired time validation will be made only when you create
-        a new instance of the registered class _ie_ your object will still be in memory.\n
+        a new instance of the registered class ie your object will still be in memory.\n
         ttl: int -- Setting True, a singleton reference will be created for each arg + kwargs hash (default False).
         Obs:  The kwargs`s order doesn't have influence\n
         """
-        if not isinstance(by_args_hash, bool):
-            by_args_hash = False
-        if not isinstance(ttl, int):
-            ttl = 0
+        by_args_hash, ttl = OnlyOne._validate_config(by_args_hash=by_args_hash, ttl=ttl)
 
         self.__option_by_args_hash = by_args_hash
         self.__option_ttl = ttl
 
         self.__singletons_by_args = dict()
         self.__singletons = dict()
+
+    @staticmethod
+    def _validate_config(by_args_hash: any, ttl: any):
+        if by_args_hash is None:
+            by_args_hash = False
+        if ttl is None:
+            ttl = 0
+
+        if not isinstance(by_args_hash, bool) or not isinstance(ttl, int):
+            raise TypeError(
+                f"One of args are not the correct type "
+                f"by_args_hash: bool = {type(by_args_hash)} ttl: int = {type(ttl)}"
+            )
+        return by_args_hash, ttl
 
     @classmethod
     def get_global_options(cls) -> dict:
@@ -88,21 +96,19 @@ class OnlyOne:
         return callback
 
     def __new__(cls, *args, **kwargs):
-        first_args_element = None
-
         if args:
             first_args_element, *args = args
 
-        if first_args_element is not None and inspect.isclass(first_args_element):
-            callback = cls.__build_callback(
-                class_reference=first_args_element,
-                option_by_args_hash=cls.__global_option_by_args_hash,
-                get_singleton_by_hash=cls.__get_global_singleton_by_hash,
-                get_simple_singleton=cls.__get_global_simple_singleton,
-                set_singleton_by_hash=cls.__set_global_singleton_by_hash,
-                set_simple_singleton=cls.__set_global_simple_singleton,
-            )
-            return callback
+            if inspect.isclass(first_args_element):
+                callback = cls.__build_callback(
+                    class_reference=first_args_element,
+                    option_by_args_hash=cls.__global_option_by_args_hash,
+                    get_singleton_by_hash=cls.__get_global_singleton_by_hash,
+                    get_simple_singleton=cls.__get_global_simple_singleton,
+                    set_singleton_by_hash=cls.__set_global_singleton_by_hash,
+                    set_simple_singleton=cls.__set_global_simple_singleton,
+                )
+                return callback
 
         obj = object.__new__(cls)
         return obj

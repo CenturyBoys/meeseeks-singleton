@@ -1,3 +1,5 @@
+import pytest
+
 from meeseeks import OnlyOne
 
 
@@ -8,9 +10,8 @@ def test_global_config_by_args_hash_default_behaviour():
 
 
 def test_global_config_by_args_hash_default_invalid_type():
-    OnlyOne.set_global_options(by_args_hash=0)
-    global_options = OnlyOne.get_global_options()
-    assert global_options["by_args_hash"] is False
+    with pytest.raises(TypeError):
+        OnlyOne.set_global_options(by_args_hash=0)
 
 
 def test_global_config_by_args_hash_set_value():
@@ -38,9 +39,8 @@ def test_config_by_args_hash_default_behaviour():
 
 
 def test_config_by_args_hash_default_invalid_type():
-    one_only_one = OnlyOne(by_args_hash=1.0)
-    options = one_only_one.get_options()
-    assert options["by_args_hash"] is False
+    with pytest.raises(TypeError):
+        OnlyOne(by_args_hash=1.0)
 
 
 def test_config_by_args_hash_set_value():
@@ -56,9 +56,8 @@ def test_config_ttl_default_behaviour():
 
 
 def test_config_ttl_default_invalid_type():
-    one_only_one = OnlyOne(ttl="1")
-    options = one_only_one.get_options()
-    assert options["ttl"] == 0
+    with pytest.raises(TypeError):
+        OnlyOne(ttl="1")
 
 
 def test_config_ttl_set_value():
