@@ -175,15 +175,14 @@ class OnlyOne:
     ):
         if singletons_by_args.get(class_reference) is None:
             singletons_by_args.update({class_reference: dict()})
-        if singletons_by_args[class_reference].get(hash_str) is None:
-            singletons_by_args[class_reference].update(
-                {
-                    hash_str: {
-                        "instance": object_instance,
-                        "created_at": datetime.utcnow().timestamp(),
-                    }
+        singletons_by_args[class_reference].update(
+            {
+                hash_str: {
+                    "instance": object_instance,
+                    "created_at": datetime.utcnow().timestamp(),
                 }
-            )
+            }
+        )
 
     @classmethod
     def __get_global_singleton_by_hash(cls, class_reference, hash_str: str):

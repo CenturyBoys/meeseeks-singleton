@@ -121,3 +121,9 @@ assert a1a == a1b
 assert a1c != a1b
 ```
 In this example, we set  `by_args_hash` variable to `True` and validate if the first two calls result in the same object despite the kwargs order being different. The last validation shows us that different args and kwargs result in different objects.
+
+# Test
+
+Yes! We tested it!!!
+Did you need a proof?! 
+OK, [click here](https://github.com/XimitGaia/meeseeks/blob/main/tests.md 'tests.md')
