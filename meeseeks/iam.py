@@ -1,7 +1,5 @@
 import inspect
 from datetime import datetime
-
-import meeseeks
 from meeseeks.src.hash.args_and_kwargs_hash import hash_generator
 
 
@@ -124,7 +122,7 @@ class OnlyOne:
         set_singleton_by_hash,
         set_simple_singleton,
     ):
-        def __new__(cls, *args, **kwargs):
+        def callback(*args, **kwargs):
             hash_str = hash_generator(*args, **kwargs)
 
             if option_by_args_hash:
@@ -132,7 +130,7 @@ class OnlyOne:
                     class_reference=class_reference, hash_str=hash_str
                 ):
                     return object_instance
-                object_instance = object.__new__(cls)
+                object_instance = class_reference(*args, **kwargs)
                 set_singleton_by_hash(
                     class_reference=class_reference,
                     object_instance=object_instance,
@@ -143,16 +141,14 @@ class OnlyOne:
                     class_reference=class_reference
                 ):
                     return object_instance
-                object_instance = object.__new__(cls)
+                object_instance = class_reference(*args, **kwargs)
                 set_simple_singleton(
                     class_reference=class_reference, object_instance=object_instance
                 )
 
             return object_instance
 
-        class_reference.__new__ = __new__
-
-        return class_reference
+        return callback
 
     @classmethod
     def __set_global_singleton_by_hash(
