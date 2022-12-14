@@ -94,8 +94,6 @@ class OnlyOne:
             get_simple_singleton=self.__get_simple_singleton,
             set_singleton_by_hash=self.__set_singleton_by_hash,
             set_simple_singleton=self.__set_simple_singleton,
-            del_singleton_by_hash=self.__del_singleton_by_hash,
-            del_simple_singleton=self.__del_simple_singleton,
         )
         return callback
 
@@ -111,8 +109,6 @@ class OnlyOne:
                     get_simple_singleton=cls.__get_global_simple_singleton,
                     set_singleton_by_hash=cls.__set_global_singleton_by_hash,
                     set_simple_singleton=cls.__set_global_simple_singleton,
-                    del_singleton_by_hash=cls.__del_global_singleton_by_hash,
-                    del_simple_singleton=cls.__del_global_simple_singleton,
                 )
                 return callback
 
@@ -127,8 +123,6 @@ class OnlyOne:
         get_simple_singleton,
         set_singleton_by_hash,
         set_simple_singleton,
-        del_singleton_by_hash,
-        del_simple_singleton,
     ):
         def __new__(cls, *args, **kwargs):
             hash_str = hash_generator(*args, **kwargs)
@@ -156,26 +150,7 @@ class OnlyOne:
 
             return object_instance
 
-        __del__ref = None
-        if hasattr(class_reference, "__del__"):
-            __del__ref = class_reference.__del__
-
-        def __del__(self, *args, **kwargs):
-            hash_str = hash_generator(*args, **kwargs)
-            if __del__ref:
-                __del__ref(self, *args, **kwargs)
-            if option_by_args_hash:
-                del_singleton_by_hash(
-                    class_reference=class_reference,
-                    hash_str=hash_str,
-                )
-            else:
-                del_simple_singleton(
-                    class_reference=class_reference
-                )
-
         class_reference.__new__ = __new__
-        class_reference.__del__ = __del__
 
         return class_reference
 
@@ -299,45 +274,3 @@ class OnlyOne:
                 del singletons[class_reference]
             else:
                 return singleton.get("instance")
-
-    @classmethod
-    def __del_global_simple_singleton(cls, class_reference):
-        OnlyOne.__del_any_simple_singleton(
-            singletons=cls.__global_singletons,
-            class_reference=class_reference,
-        )
-
-    def __del_simple_singleton(self, class_reference):
-        OnlyOne.__del_any_simple_singleton(
-            singletons=self.__singletons,
-            class_reference=class_reference,
-        )
-
-    @staticmethod
-    def __del_any_simple_singleton(singletons: dict, class_reference):
-        if class_reference in singletons:
-            del singletons[class_reference]
-
-    @classmethod
-    def __del_global_singleton_by_hash(
-        cls, class_reference, hash_str: str
-    ):
-        OnlyOne.__del_any_singleton_by_hash(
-            singletons_by_args=cls.__global_singletons_by_args,
-            class_reference=class_reference,
-            hash_str=hash_str,
-        )
-
-    def __del_singleton_by_hash(self, class_reference, hash_str: str):
-        OnlyOne.__del_any_singleton_by_hash(
-            singletons_by_args=self.__singletons_by_args,
-            class_reference=class_reference,
-            hash_str=hash_str,
-        )
-
-    @staticmethod
-    def __del_any_singleton_by_hash(
-        singletons_by_args: dict, class_reference, hash_str: str
-    ):
-        if class_reference in singletons_by_args and hash_str in singletons_by_args[class_reference]:
-            del singletons_by_args[class_reference][hash_str]
