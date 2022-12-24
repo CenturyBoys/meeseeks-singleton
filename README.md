@@ -108,7 +108,7 @@ import time
 
 @meeseeks.OnlyOne(by_args_hash=True)
 class A:
-    def __int__(self, a):
+    def __int__(self, *args, **kwargs):
         pass
 
 a1a = A(1, var_a="a", var_b="b")
