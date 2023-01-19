@@ -1,5 +1,3 @@
-import inspect
-import time
 from enum import Enum
 
 import pytest
@@ -8,104 +6,48 @@ from freezegun import freeze_time
 import meeseeks
 
 
-class SingletonType(Enum):
-    GLOBAL = "global"
-    SINGLE = "single"
+@pytest.fixture()
+def stub_a():
+    @meeseeks.OnlyOne()
+    class StubA:
+        def __init__(self, *args, **kwargs):
+            self.args: tuple = args
+            self.kwargs: dict = kwargs
+
+    return StubA
 
 
-@pytest.fixture(params=[SingletonType.GLOBAL, SingletonType.SINGLE])
-def stub_a(request):
-    if request.param == SingletonType.GLOBAL:
-        meeseeks.OnlyOne.clean_globals_references()
+@pytest.fixture()
+def stub_a_with_bah():
+    @meeseeks.OnlyOne(by_args_hash=True)
+    class StubA:
+        def __init__(self, *args, **kwargs):
+            self.args: tuple = args
+            self.kwargs: dict = kwargs
 
-        @meeseeks.OnlyOne
-        class GlobalStubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return GlobalStubA
-    if request.param == SingletonType.SINGLE:
-
-        @meeseeks.OnlyOne()
-        class StubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return StubA
+    return StubA
 
 
-@pytest.fixture(params=[SingletonType.GLOBAL, SingletonType.SINGLE])
-def stub_a_with_bah(request):
-    if request.param == SingletonType.GLOBAL:
-        meeseeks.OnlyOne.clean_globals_references()
-        meeseeks.OnlyOne.set_global_options(by_args_hash=True)
+@pytest.fixture()
+def stub_a_with_ttl():
+    @meeseeks.OnlyOne(ttl=1)
+    class StubA:
+        def __init__(self, *args, **kwargs):
+            self.args: tuple = args
+            self.kwargs: dict = kwargs
 
-        @meeseeks.OnlyOne
-        class GlobalStubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return GlobalStubA
-    if request.param == SingletonType.SINGLE:
-
-        @meeseeks.OnlyOne(by_args_hash=True)
-        class StubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return StubA
+    return StubA
 
 
-@pytest.fixture(params=[SingletonType.GLOBAL, SingletonType.SINGLE])
-def stub_a_with_ttl(request):
-    if request.param == SingletonType.GLOBAL:
-        meeseeks.OnlyOne.clean_globals_references()
-        meeseeks.OnlyOne.set_global_options(ttl=1)
+@pytest.fixture()
+def stub_a_with_ttl_and_by_args_hash():
+    @meeseeks.OnlyOne(by_args_hash=True, ttl=1)
+    class StubA:
+        def __init__(self, *args, **kwargs):
+            self.args: tuple = args
+            self.kwargs: dict = kwargs
 
-        @meeseeks.OnlyOne
-        class GlobalStubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return GlobalStubA
-    if request.param == SingletonType.SINGLE:
-
-        @meeseeks.OnlyOne(ttl=1)
-        class StubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return StubA
-
-
-@pytest.fixture(params=[SingletonType.GLOBAL, SingletonType.SINGLE])
-def stub_a_with_ttl_and_by_args_hash(request):
-    if request.param == SingletonType.GLOBAL:
-        meeseeks.OnlyOne.clean_globals_references()
-        meeseeks.OnlyOne.set_global_options(by_args_hash=True, ttl=1)
-
-        @meeseeks.OnlyOne
-        class GlobalStubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return GlobalStubA
-    if request.param == SingletonType.SINGLE:
-
-        @meeseeks.OnlyOne(by_args_hash=True, ttl=1)
-        class StubA:
-            def __init__(self, *args, **kwargs):
-                self.args: tuple = args
-                self.kwargs: dict = kwargs
-
-        return StubA
+    return StubA
 
 
 def test_get_same_instance(stub_a):
