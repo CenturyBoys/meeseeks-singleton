@@ -8,25 +8,7 @@ This is meeseeks a single class to do singletons. In the core meeseeks is a clas
 
 # Scopes
 
-The scope can be global that means your configuration and your singletons can be called anywhere inside your code, or specialized one, that is otherwise you create meeseeks object (OnlyOne) and this object will have your configuration and singletons
-
-### Global
-
-```python
-import meeseeks
-
-@meeseeks.OnlyOne
-class A:
-    def __int__(self, a):
-        pass
-
-a1a = A(10)
-a1b = A(10)
-a1c = A(20)
-
-assert a1a == a1b == a1c
-```
-On this example we register the class reference in the global scope 
+Each class with his decorator has a specialized scope, that is otherwise you create meeseeks object (OnlyOne) and this object will have your configuration and singletons
 
 ### Specialized
 
@@ -79,9 +61,7 @@ We provide two configuration options:
 import meeseeks
 import time
 
-meeseeks.OnlyOne.set_global_options(ttl=1)
-
-@meeseeks.OnlyOne
+@meeseeks.OnlyOne(ttl=1)
 class A:
     def __int__(self, *args, **kwargs):
         pass
@@ -108,7 +88,7 @@ import time
 
 @meeseeks.OnlyOne(by_args_hash=True)
 class A:
-    def __int__(self, a):
+    def __int__(self, *args, **kwargs):
         pass
 
 a1a = A(1, var_a="a", var_b="b")
@@ -121,9 +101,3 @@ assert a1a == a1b
 assert a1c != a1b
 ```
 In this example, we set  `by_args_hash` variable to `True` and validate if the first two calls result in the same object despite the kwargs order being different. The last validation shows us that different args and kwargs result in different objects.
-
-# Test
-
-Yes! We tested it!!!
-Did you need a proof?! 
-OK, [click here](https://github.com/XimitGaia/meeseeks/blob/main/tests.md 'tests.md')
