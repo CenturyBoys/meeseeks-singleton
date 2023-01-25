@@ -55,6 +55,8 @@ class OnlyOne:
         self.__singletons = {}
 
     def __call__(self, class_reference, *args, **kwargs):
+        class_reference__init__ = class_reference.__init__
+
         def __new__(cls, *args, **kwargs):
             hash_str = hash_generator(*args, **kwargs)
 
@@ -79,9 +81,11 @@ class OnlyOne:
                     class_reference=class_reference, object_instance=object_instance
                 )
 
+            class_reference__init__(object_instance, *args, **kwargs)
             return object_instance
 
         class_reference.__new__ = __new__
+        del class_reference.__init__
 
         return class_reference
 
