@@ -1,13 +1,19 @@
 repos:
 - repo: local
   hooks:
-    - id: black
-      name: black
+    - id: black-check
+      name: black-check
       entry: black .
       language: system
       types: [ python ]
-    - id: pylint
-      name: pylint
+    - id: pytest-check
+      name: pytest-check
+      entry: pytest
+      language: system
+      types: [ python ]
+      pass_filenames: false
+    - id: pylint-check
+      name: pylint-check
       entry: pylint
       language: system
       types: [python]
@@ -18,8 +24,3 @@ repos:
           "-rn", # Only display messages
           "-sn", # Don't display the score
         ]
-    - id: pytest
-      name: pytest
-      entry: pytest
-      language: system
-      types: [ python ]
