@@ -85,7 +85,8 @@ class OnlyOne:
             return object_instance
 
         class_reference.__new__ = __new__
-        del class_reference.__init__
+        if class_reference__init__ != object.__init__:
+            del class_reference.__init__
 
         return class_reference
 
