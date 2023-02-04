@@ -50,6 +50,15 @@ def stub_a_with_ttl_and_by_args_hash():
     return StubA
 
 
+@pytest.fixture()
+def stub_a_without_init():
+    @meeseeks.OnlyOne()
+    class StubA:
+        pass
+
+    return StubA
+
+
 def test_get_same_instance(stub_a):
     a1 = stub_a()
     a2 = stub_a()
@@ -119,6 +128,13 @@ def test_get_instance_with_ttl_and_instance_by_args_hash(
 
     assert a1b not in [a1c, a1d]
     assert a2b not in [a2c, a2d]
+
+
+def test_instance_without_init(stub_a_without_init):
+    a1a = stub_a_without_init()
+    a2a = stub_a_without_init()
+
+    assert a1a == a2a
 
 
 def test_clean_specialized_same_instance():

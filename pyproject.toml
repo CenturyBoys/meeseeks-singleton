@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "meeseeks-singleton"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Singleton python project"
 authors = ["Ximit Gaia <im.ximit@gamil.com>"]
 readme = "README.md"
@@ -23,5 +23,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [project.urls]
-"Homepage" = "https://github.com/CenturyBoys/meeseeks-singleton"
-"Bug Tracker" = "https://github.com/CenturyBoys/meeseeks-singleton/issues"
+Homepage = "https://github.com/CenturyBoys/meeseeks-singleton"
