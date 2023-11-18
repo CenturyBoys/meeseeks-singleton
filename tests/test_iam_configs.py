@@ -5,8 +5,7 @@ import meeseeks
 
 def test_config_by_args_hash_default_behaviour():
     one_only_one = meeseeks.OnlyOne()
-    options = one_only_one.get_options()
-    assert options["by_args_hash"] is False
+    assert one_only_one._option_by_args_hash is False
 
 
 def test_config_by_args_hash_default_invalid_type():
@@ -16,14 +15,12 @@ def test_config_by_args_hash_default_invalid_type():
 
 def test_config_by_args_hash_set_value():
     one_only_one = meeseeks.OnlyOne(by_args_hash=True)
-    options = one_only_one.get_options()
-    assert options["by_args_hash"] is True
+    assert one_only_one._option_by_args_hash is True
 
 
 def test_config_ttl_default_behaviour():
     one_only_one = meeseeks.OnlyOne()
-    options = one_only_one.get_options()
-    assert options["ttl"] == 0
+    assert one_only_one._option_ttl == 0
 
 
 def test_config_ttl_default_invalid_type():
@@ -33,10 +30,9 @@ def test_config_ttl_default_invalid_type():
 
 def test_config_ttl_set_value():
     one_only_one = meeseeks.OnlyOne(ttl=4)
-    options = one_only_one.get_options()
-    assert options["ttl"] == 4
+    assert one_only_one._option_ttl == 4
 
 
 def test__new__():
     with pytest.raises(TypeError):
-        specialized = meeseeks.OnlyOne(1)
+        meeseeks.OnlyOne(1)
