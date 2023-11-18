@@ -74,7 +74,6 @@ def test_get_same_instance_with_ignore_args_and_kwargs(stub_a):
 
 
 def test_get_instance_by_args_hash(stub_a_with_bah):
-
     a1a = stub_a_with_bah(1, var_a="a")
     a2a = stub_a_with_bah(10, var_b="a")
     a1b = stub_a_with_bah(1, var_a="a")
@@ -138,7 +137,6 @@ def test_instance_without_init(stub_a_without_init):
 
 
 def test_clean_specialized_same_instance():
-
     specialized = meeseeks.OnlyOne(by_args_hash=True)
 
     @specialized
@@ -159,7 +157,6 @@ def test_clean_specialized_same_instance():
 
 
 def test_ttl_border():
-
     specialized = meeseeks.OnlyOne(ttl=1)
 
     @specialized
@@ -181,7 +178,6 @@ def test_ttl_border():
 
 
 def test_ttl_border_with_bah():
-
     specialized = meeseeks.OnlyOne(ttl=1, by_args_hash=True)
 
     @specialized
