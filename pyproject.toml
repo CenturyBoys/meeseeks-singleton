@@ -6,7 +6,6 @@ authors = ["Ximit Gaia <im.ximit@gamil.com>"]
 readme = "README.md"
 packages = [
     { include = "meeseeks"},
-    { include = "meeseeks/**/*.py" },
 ]
 
 [tool.poetry.dependencies]
@@ -17,10 +16,16 @@ pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
 mutatest = "^3.1.0"
 freezegun = "^1.2.2"
+pre-commit = "^3.5.0"
+black = "^23.11.0"
+pylint = "^3.0.2"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[project.urls]
-Homepage = "https://github.com/CenturyBoys/meeseeks-singleton"
+[tool.poetry.urls]
+homepage = "https://github.com/CenturyBoys/meeseeks-singleton"
+documentation = "https://github.com/CenturyBoys/meeseeks-singleton/blob/main/README.md"
+repository = "https://github.com/CenturyBoys/meeseeks-singleton/tree/main"
+bugs = "https://github.com/CenturyBoys/meeseeks-singleton/issues"
