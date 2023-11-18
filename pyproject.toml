@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "meeseeks-singleton"
-version = "0.4.3"
+version = "0.4.4"
 description = "A Singleton python project"
 authors = ["Ximit Gaia <im.ximit@gamil.com>"]
 readme = "README.md"
